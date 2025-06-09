@@ -100,7 +100,28 @@
       box-shadow: 0 5px 15px rgba(185, 58, 58, 0.6);
       transition: background-color 0.3s ease;
     }
-
+    #popup-music-btn {
+      background-color:  #b93a3a;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(185, 58, 58, 0.6);
+      transition: background-color 0.3s ease;
+    }
+    #game-btn {
+      background-color:  #b93a3a;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(185, 58, 58, 0.6);
+      transition: background-color 0.3s ease;
+    }
     .heart {
       position: absolute;
       bottom: 15px;
@@ -192,7 +213,7 @@
   <h1>Happy Birthday, Love!</h1>
   <p>I made this surprise just for you. Can't wait to celebrate together! 🎉❤️! 💖</p>
   <div id="countdown">Loading...</div>
-
+<br><br>
  <button id="music-btn">Pause Music 🎵</button>
 
   <audio id="birthday-music" loop>
@@ -211,6 +232,8 @@
       </p>
       <div class="heart">❤️</div>
       <button id="popup-music-btn">Pause Music 🎵</button>
+      <br><br>
+  <button id="game-btn">Play a Game 🎮</button>
     </div>
   </div>
 
@@ -307,6 +330,14 @@
 
     musicBtn.onclick = () => toggleMusic(musicBtn);
     popupMusicBtn.onclick = () => toggleMusic(popupMusicBtn);
+
+const gameBtn = document.getElementById("game-btn");
+
+gameBtn.onclick = () => {
+  window.location.href = "game.html";
+};
+
+
   </script>
 </body>
 </html>
