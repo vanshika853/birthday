@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f9d5d3, #fcefee);
+      color: #b93a3a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 6px #fbc7c7;
+      animation: fadeInDown 1s ease forwards;
+    }
+
+    p {
+      font-size: 1.3em;
+      margin-bottom: 40px;
+      color: #8b2e2e;
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    #countdown {
+      font-size: 2.2em;
+      letter-spacing: 2px;
+      background: #f5b7b1;
+      padding: 15px 35px;
+      border-radius: 50px;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 0 15px #f9b5b5;
+      animation: pulse 2s infinite;
+      user-select: none;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle, #fce9f1, #f4c0d4);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    .message-box {
+      max-width: 600px;
+      background: #fff0f6cc;
+      padding: 30px 40px;
+      border-radius: 25px;
+      box-shadow: 0 0 25px #e97ca3cc;
+      font-size: 1.3em;
+      line-height: 1.6;
+      font-weight: 500;
+      position: relative;
+      z-index: 10;
+      color: #a73357;
+    }
+
+    .message-box h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.8em;
+      margin-bottom: 20px;
+      color: #d54e7f;
+    }
+
+       #music-btn:hover {
+      background-color: #8b2e2e;
+    }
+
+
+      #music-btn {
+      background-color:  #b93a3a;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1.1em;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(185, 58, 58, 0.6);
+      transition: background-color 0.3s ease;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-size: 2.5em;
+      color: #d54e7f;
+      animation: beat 1.5s infinite;
+      user-select: none;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      opacity: 0.9;
+      z-index: 200;
+      pointer-events: none;
+      border-radius: 3px;
+      animation: confetti-fall linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Balloons */
+    .balloon {
+      position: fixed;
+      bottom: -150px;
+      width: 50px;
+      height: 70px;
+      background: radial-gradient(circle at 50% 40%, #ff4c68, #b72849);
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      box-shadow: inset -3px -10px 10px #f66b89;
+      z-index: 150;
+      transition: transform 0.2s ease;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -25px;
+      left: 50%;
+      width: 2px;
+      height: 25px;
+      background: #b72849;
+      transform: translateX(-50%);
+      border-radius: 1px;
+    }
+
+    .pop {
+      animation: popAnim 0.3s forwards;
+    }
+
+    @keyframes popAnim {
+      0% { transform: scale(1) rotate(0); opacity: 1; }
+      100% { transform: scale(2) rotate(45deg); opacity: 0; }
+    }
+
+    @keyframes fadeInDown {
+      from {opacity: 0; transform: translateY(-50px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeInUp {
+      from {opacity: 0; transform: translateY(50px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 15px #f9b5b5;}
+      50% { box-shadow: 0 0 30px #f56a6a;}
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes beat {
+      0%, 100% {transform: scale(1);}
+      50% {transform: scale(1.2);}
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Happy Birthday, Love!</h1>
+  <p>I made this surprise just for you. Can't wait to celebrate together! 🎉❤️! 💖</p>
+  <div id="countdown">Loading...</div>
+
+ <button id="music-btn">Pause Music 🎵</button>
+
+  <audio id="birthday-music" loop>
+    <source src="happy-birthday.mp3" type="audio/mpeg">
+    Your browser does not support audio.
+  </audio>
+
+  <div id="popup">
+    <div class="message-box">
+      <h1>Happy Birthday, Himanshu! 🎉</h1>
+      <p>
+        To the one who makes every day an adventure,<br>
+        I love the way you make me laugh, support me, and make me feel loved. 💖<br><br>
+        I'm so grateful to have you in my life and can’t wait to celebrate another year with you. 🎂<br><br>
+        May your birthday be filled with joy, happiness, and everything you wish for. I love you! 💕
+      </p>
+      <div class="heart">❤️</div>
+      <button id="popup-music-btn">Pause Music 🎵</button>
+    </div>
+  </div>
+
+  <script>
+    const countdownEl = document.getElementById('countdown');
+    const popup = document.getElementById('popup');
+     const music = document.getElementById("birthday-music");
+    const musicBtn = document.getElementById("music-btn");
+    const popupMusicBtn = document.getElementById("popup-music-btn");
+
+
+    // Countdown: 1 minute from now
+    const birthdayDate = new Date(Date.now() + 60 * 1000);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = birthdayDate - now;
+
+      if (diff <= 0) {
+        countdownEl.textContent = "🎉 It's Your Birthday! 🎉";
+        clearInterval(interval);
+        popup.style.display = 'flex';
+        launchConfetti();
+        launchBalloons();
+        return;
+      }
+
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      countdownEl.textContent = `${minutes}m ${seconds}s`;
+    }
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+
+    // Confetti
+    function launchConfetti() {
+      const colors = ['#f94144', '#f3722c', '#f9c74f', '#90be6d', '#577590'];
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-10px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = confetti.style.height = (5 + Math.random() * 10) + 'px';
+        confetti.style.animationDuration = (2 + Math.random() * 3) + 's';
+        document.body.appendChild(confetti);
+        confetti.addEventListener('animationend', () => confetti.remove());
+      }
+    }
+
+    // Balloons
+    function launchBalloons() {
+      const colors = ['#ff4c68', '#ff66a3', '#ffb6c1', '#ff99cc', '#ff7f50'];
+      for (let i = 0; i < 10; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'balloon';
+        balloon.style.left = Math.random() * (window.innerWidth - 60) + 'px';
+        balloon.style.background = `radial-gradient(circle at 50% 40%, ${colors[Math.floor(Math.random() * colors.length)]}, #b72849)`;
+        document.body.appendChild(balloon);
+
+        const floatDuration = 7 + Math.random() * 5;
+        const animationName = `floatUp${i}`;
+        const keyframes = `
+          @keyframes ${animationName} {
+            0% { bottom: -150px; transform: translateX(0px); }
+            100% { bottom: 110vh; transform: translateX(${Math.random() * 100 - 50}px); }
+          }`;
+
+        document.styleSheets[0].insertRule(keyframes, document.styleSheets[0].cssRules.length);
+        balloon.style.animation = `${animationName} ${floatDuration}s linear forwards`;
+
+        balloon.addEventListener('click', () => {
+          balloon.classList.add('pop');
+          balloon.style.pointerEvents = 'none';
+          setTimeout(() => balloon.remove(), 300);
+        });
+      }
+    }
+         music.volume = 0.3;
+    music.play().catch(() => {
+      musicBtn.textContent = "Play Music 🎵";
+    });
+
+    function toggleMusic(button) {
+      if (music.paused) {
+        music.play();
+        button.textContent = "Pause Music 🎵";
+      } else {
+        music.pause();
+        button.textContent = "Play Music 🎵";
+      }
+    }
+
+    musicBtn.onclick = () => toggleMusic(musicBtn);
+    popupMusicBtn.onclick = () => toggleMusic(popupMusicBtn);
+  </script>
+</body>
+</html>
