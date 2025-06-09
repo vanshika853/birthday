@@ -233,7 +233,7 @@
       <div class="heart">❤️</div>
       <button id="popup-music-btn">Pause Music 🎵</button>
       <br><br>
-  <button id="game-btn">Play a Game 🎮</button>
+  <a href="game.html"><button id="game-btn">Play a Game 🎮</button></a>
     </div>
   </div>
 
@@ -334,6 +334,7 @@
 const gameBtn = document.getElementById("game-btn");
 
 gameBtn.onclick = () => {
+  console.log("Game button clicked");
   window.location.href = "game.html";
 };
 
