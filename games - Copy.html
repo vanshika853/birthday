@@ -337,12 +337,21 @@
 
   <section id="unwrapGift" class="game">
     <h2>Gift Unwrap Surprise</h2>
-    <p>Game UI will go here.</p>
+    <p>Click the present to unwrap your surprise!</p>
+<div id="giftWrapContainer" style="text-align: center; margin-top: 30px;">
+  <img id="giftBox" src="download.png" alt="Gift Box" style="cursor: pointer; transition: transform 0.3s;" />
+  <div id="giftSurprise" style="margin-top: 20px; font-size: 2rem; color: #ff4081; font-weight: bold;"></div>
+  <img id="surpriseImage" src="download.png" alt="" style="margin-top: 20px; max-width: 200px; display: none;" />
+</div>
+
   </section>
 
   <section id="memoryQuiz" class="game">
     <h2>Which Memory is Real?</h2>
-    <p>Game UI will go here.</p>
+    <p>Click the messages which are true</p>
+    <div id="memoryChoices" style="display: flex; gap: 20px; flex-wrap: wrap;"></div>
+  <div id="memoryFeedback" style="margin-top: 10px; font-weight: bold;"></div>
+</div>
   </section>
 </main>
 
@@ -633,6 +642,127 @@ const recordBtn = document.getElementById('recordBtn');
       }, 1000);
     }
   });
+
+
+const giftBox = document.getElementById('giftBox');
+const giftSurprise = document.getElementById('giftSurprise');
+const surpriseImage = document.getElementById('surpriseImage');
+
+const surprises = [
+  {
+    message: "🎉 Remember this day?",
+    image: "Snapchat-600843823.jpg"
+  },
+  {
+    message: "💎 You shine brighter than any gem!",
+    image: "Snapchat-1637757786.jpg"
+  },
+  {
+    message: "🎂 us in rain!",
+    image: "Snapchat-1725040127.jpg"
+  },
+  {
+    message: "🚀 You're the best!",
+    image: "Snapchat-11483874.jpg"
+  },
+  {
+    message: "🐶 A pic of us kissing!",
+    image: "Snapchat-608486969.jpg"
+  },
+  {
+    message: "🌈 May your day be filled with magic!",
+    image: "IMG-20250224-WA0007.jpg"
+  },
+  {
+    message: "💖 You’re loved more than you know!",
+    image: "Snapchat-1592365332.jpg"
+  },
+  {
+    message: "🧸 Here's a hug!",
+    image: "Snapchat-1806886385.jpg"
+  }
+];
+
+let isCooldown = false;
+
+giftBox.addEventListener('click', () => {
+// After showing the surprise
+
+  if (isCooldown) return;
+
+  isCooldown = true;
+  giftBox.style.transform = "scale(0.9)";
+  
+  setTimeout(() => {
+    // Reset scale
+    giftBox.style.transform = "scale(1)";
+    
+    // Flip between closed and open box icons if you want:
+    giftBox.src = "https://img.icons8.com/emoji/96/open-gift-emoji.png";
+    
+    // Pick a new random surprise
+    const randomSurprise = surprises[Math.floor(Math.random() * surprises.length)];
+    giftSurprise.textContent = randomSurprise.message;
+    surpriseImage.src = randomSurprise.image;
+    surpriseImage.style.display = 'block';
+
+    createConfetti(); // optional fun burst on every click
+
+    // Reset cooldown after 1 second
+    setTimeout(() => {
+      isCooldown = false;
+    }, 1000);
+  }, 300);
+});
+
+
+
+  const memoryChoices = document.getElementById('memoryChoices');
+  const memoryFeedback = document.getElementById('memoryFeedback');
+
+  const memoryOptions = [
+    { text: "We danced in the rain last year and got soaked together!", correct: true },
+    { text: "I hate icecream with a passion.", correct: false },
+    { text: "We have watch many anime together.", correct: true },
+    { text: "Your hate cars and electronic items... obviously.", correct: false },
+    { text: "We love cuddling and kissing..ofcourse.", correct: true },
+    { text: "You hate when we're away from eachother.", correct: true },
+    { text: "we have done almost everything we said in chat.", correct: true },
+    { text: "You hate to be the one in lead.", correct: false }
+  ];
+
+  function loadMemoryQuiz() {
+    memoryChoices.innerHTML = '';
+    memoryFeedback.textContent = '';
+    memoryOptions.forEach((option, index) => {
+      const btn = document.createElement('button');
+      btn.textContent = option.text;
+      btn.style.padding = '10px';
+      btn.style.border = '2px solid #ff4081';
+      btn.style.borderRadius = '8px';
+      btn.style.background = '#fff0f6';
+      btn.style.cursor = 'pointer';
+      btn.style.flex = '1 1 300px';
+      btn.dataset.correct = option.correct;
+      btn.addEventListener('click', () => {
+        btn.style.backgroundColor = option.correct ? '#c8e6c9' : '#ffcdd2';
+        btn.disabled = true;
+        if (option.correct) {
+          memoryFeedback.textContent = 'O You picked a real memory!';
+          memoryFeedback.style.color = '#388e3c';
+        } else {
+          memoryFeedback.textContent = '❌ Oops! That one isn’t true.';
+          memoryFeedback.style.color = '#d32f2f';
+        }
+      });
+      memoryChoices.appendChild(btn);
+    });
+  }
+
+  // Call the function when the memory quiz section is shown
+  document.querySelector('[data-game="memoryQuiz"]').addEventListener('click', loadMemoryQuiz);
+
+
 
 </script>
 
