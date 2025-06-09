@@ -224,6 +224,30 @@
   pointer-events: none;
 }
 
+ .lyrics {
+    font-size: 2.4rem;
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #7b4c3b;
+  }
+  
+ button:disabled {
+    background-color: #ffa99b;
+    cursor: default;
+  }
+  button:hover:not(:disabled) {
+    background-color: #e65a4e;
+  }
+  audio {
+    margin-top: 10px;
+  }
+  .message {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #555;
+    font-weight: 600;
+  }
+
 </style>
 </head>
 <body>
@@ -297,7 +321,18 @@
 
   <section id="singAlong" class="game">
     <h2>Sing Along Challenge</h2>
-    <p>Game UI will go here.</p>
+    <p><div class="lyrics" id="lyrics">
+  Happy birthday to you,<br />
+  Happy birthday to you,<br />
+  Happy birthday dear friend,<br />
+  Happy birthday to you!
+</div>
+
+<button id="recordBtn">🎙️ Start Singing</button>
+
+<div id="status"></div>
+<audio id="playback" controls style="display:none;"></audio>
+<div class="message" id="message"></div></p>
   </section>
 
   <section id="unwrapGift" class="game">
@@ -513,6 +548,92 @@ cake.addEventListener('drop', (e) => {
   dropped.style.top = (e.clientY - rect.top - 20) + 'px';
   cake.appendChild(dropped);
 });
+
+const doneCakeBtn = document.getElementById('doneCakeBtn');
+const confettiContainer = document.getElementById('confetti');
+
+function createSmallConfetti() {
+  for(let i=0; i<150; i++){
+    const confetto = document.createElement('div');
+    confetto.style.position = 'absolute';
+    confetto.style.width = '6px';
+    confetto.style.height = '6px';
+    confetto.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+    // Confetti centered roughly on the cake
+    const cakeRect = cake.getBoundingClientRect();
+    confetto.style.left = (cakeRect.left + cakeRect.width / 2 + (Math.random() - 0.5) * 150) + 'px';
+    confetto.style.top = (cakeRect.top + cakeRect.height / 2 + (Math.random() - 0.5) * 150) + 'px';
+    confetto.style.opacity = 1;
+    confetto.style.transform = `rotate(${Math.random()*360}deg)`;
+    confetto.style.animation = `confettiFall 5s ease forwards`;
+    confettiContainer.appendChild(confetto);
+    setTimeout(() => {
+      confettiContainer.removeChild(confetto);
+    }, 2000);
+  }
+}
+
+doneCakeBtn.addEventListener('click', () => {
+  createSmallConfetti();
+});
+
+const recordBtn = document.getElementById('recordBtn');
+  const status = document.getElementById('status');
+  const playback = document.getElementById('playback');
+  const message = document.getElementById('message');
+
+  let mediaRecorder;
+  let audioChunks = [];
+
+  // Check if browser supports mediaRecorder
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Sorry, your browser does not support audio recording.');
+    recordBtn.disabled = true;
+  }
+
+  recordBtn.addEventListener('click', async () => {
+    if (recordBtn.textContent === '🎙️ Start Singing') {
+      // Start recording
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.addEventListener('dataavailable', event => {
+          audioChunks.push(event.data);
+        });
+
+        mediaRecorder.addEventListener('stop', () => {
+          const audioBlob = new Blob(audioChunks);
+          const audioUrl = URL.createObjectURL(audioBlob);
+          playback.src = audioUrl;
+          playback.style.display = 'block';
+          message.textContent = 'Great job! Listen to your recording above 🎉';
+          recordBtn.textContent = '🎙️ Start Singing';
+          status.textContent = '';
+          stream.getTracks().forEach(track => track.stop());
+        });
+
+        mediaRecorder.start();
+        recordBtn.textContent = '⏹️ Stop Singing';
+        status.textContent = 'Recording... sing loud and proud!';
+        playback.style.display = 'none';
+        message.textContent = '';
+      } catch (err) {
+        alert('Could not access your microphone. Please allow microphone permissions.');
+      }
+    } else {
+      // Stop recording
+      mediaRecorder.stop();
+      status.textContent = 'Processing your recording...';
+      recordBtn.disabled = true;
+      // Re-enable button shortly after stop event fires
+      setTimeout(() => {
+        recordBtn.disabled = false;
+      }, 1000);
+    }
+  });
+
 </script>
 
 </body>
